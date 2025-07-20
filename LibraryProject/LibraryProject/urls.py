@@ -20,5 +20,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('relation/', include('relationship_app.urls')),  # رابط فرعي
+    path('', include('relationship_app.urls')),
 ]
 
