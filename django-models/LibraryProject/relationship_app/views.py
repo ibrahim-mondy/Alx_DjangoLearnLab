@@ -14,12 +14,13 @@ class LibraryDetailView(DetailView):
     context_object_name = 'library'
     
 from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth import login
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            login(request, user) 
             return redirect('login')
     else:
         form = UserCreationForm()
