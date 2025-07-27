@@ -13,4 +13,4 @@ class RegisterForm(forms.ModelForm):
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'author', 'publication_year', 'library']
+        fields = ['title', 'author', 'publication_year',]
