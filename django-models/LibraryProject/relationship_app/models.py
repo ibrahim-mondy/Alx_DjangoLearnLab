@@ -1,6 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Author(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.name
+
+class Library(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -9,6 +16,9 @@ class Author(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    publication_year = models.IntegerField()
+    library = models.ForeignKey(Library, on_delete=models.CASCADE, null=True)
+
 
     class Meta:
         permissions = [
@@ -20,24 +30,12 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-    def __str__(self):
-        return self.title
-
-class Library(models.Model):
-    name = models.CharField(max_length=100)
-    books = models.ManyToManyField(Book)
-
-    def __str__(self):
-        return self.name
-
 class Librarian(models.Model):
     name = models.CharField(max_length=100)
     library = models.OneToOneField(Library, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
-    
-from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     ROLE_CHOICES = [
@@ -50,4 +48,3 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.role}"
-
