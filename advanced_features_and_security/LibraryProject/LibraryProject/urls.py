@@ -26,4 +26,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),  
     path('accounts/', include('relationship_app.urls')), 
     path('', lambda request: HttpResponseRedirect('/admin/')), 
+    
 ]
