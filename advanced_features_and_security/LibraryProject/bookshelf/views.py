@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from .models import Book, Library, UserProfile
 from bookshelf.forms import BookForm
+from .forms import ExampleForm
 
 
 def register(request):
