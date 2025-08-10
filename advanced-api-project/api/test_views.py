@@ -14,7 +14,7 @@ class BookAPITests(APITestCase):
         # Create test users
         self.user = User.objects.create_user(username="testuser", password="testpass")
         self.other_user = User.objects.create_user(username="otheruser", password="otherpass")
-
+        self.client.login(username="testuser", password="testpass")
         # Create sample books
         self.book1 = Book.objects.create(title="Book One", author="Author A", publication_year=2000)
         self.book2 = Book.objects.create(title="Book Two", author="Author B", publication_year=2010)
