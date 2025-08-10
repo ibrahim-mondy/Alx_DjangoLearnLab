@@ -1,19 +1,20 @@
 from django.db import models
 
 # Create your models here.
-# Author model:
+
+# model Author
 class Author(models.Model):
-    name = models.CharField(max_length=100)
-    
-    def __str__(self, name):
-        return self.name
-    
-# Book Model:
-class Book(models.Model):
-    title = models.CharField(max_length=100)
-    publication_year = models.IntegerField()
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='Book')
+    name = models.CharField(max_length=250)
     
     def __str__(self):
-        return f"{self.title} ({self.publication_year})"
+        return self.name
     
+# model Book
+class Book(models.Model):
+    title = models.CharField(max_length=250)
+    publication_year = models.IntegerField()
+    author = models.ForeignKey(
+        Author,
+        on_delete=models.CASCADE,
+        related_name='books'
+    )
