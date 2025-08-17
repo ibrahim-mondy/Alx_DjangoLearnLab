@@ -42,6 +42,6 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy('post_list')
 
     def test_func(self):
-        # يسمح بس للكاتب بحذف البوست
+        
         post = self.get_object()
         return self.request.user == post.author
