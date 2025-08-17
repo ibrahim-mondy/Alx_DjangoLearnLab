@@ -1,38 +1,33 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth import login
-from .forms import CustomUserRegistrationForm
-from django.contrib.auth.decorators import login_required
-from .forms import ProfileUpdateForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import Post
 
-class CustomLoginView(LoginView):
-    template_name = 'blog/login.html'
+class PostListView(ListView):
+    model = Post
+    template_name = "blog/post_list.html"
+    context_object_name = "posts"
 
-class CustomLogoutView(LogoutView):
-    template_name = 'blog/logged_out.html'
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "blog/post_detail.html"
 
-def home_view(request):
-    return render(request, 'blog/home.html')
+class PostCreateView(CreateView):
+    model = Post
+    template_name = "blog/post_form.html"
+    fields = ["title", "content", "author"]
 
-def register_view(request):
-    if request.method == 'POST':
-        form = CustomUserRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('blog/home')
-    else:
-        form = CustomUserRegistrationForm()
-    return render(request, 'blog/register.html', {'form': form})
+    def get_success_url(self):
+        return reverse_lazy("post_list")
 
-@login_required
-def profile_view(request):
-    if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('blog/profile')
-    else:
-        form = ProfileUpdateForm(instance=request.user)
-        
-    return render(request, 'blog/profile.html', {'form': form})
+class PostUpdateView(UpdateView):
+    model = Post
+    template_name = "blog/post_form.html"
+    fields = ["title", "content"]
+
+    def get_success_url(self):
+        return reverse_lazy("post_list")
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = "blog/post_confirm_delete.html"
+    success_url = reverse_lazy("post_list")
