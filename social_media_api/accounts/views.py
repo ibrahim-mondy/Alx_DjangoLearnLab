@@ -22,7 +22,6 @@ class RegisterView(generics.CreateAPIView):
             "token": token.key
         }, status=status.HTTP_201_CREATED)
 
-
 class LoginView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.data)
