@@ -3,6 +3,8 @@ from .models import CustomUser
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
+from .models import Post, Comment
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -37,3 +39,20 @@ class LoginSerializer(serializers.Serializer):
         if user and user.is_active:
             return user
         raise serializers.ValidationError("Invalid credentials")
+
+
+class PostSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source="author.username")
+
+    class Meta:
+        model = Post
+        fields = ["id", "author", "title", "content", "created_at", "updated_at"]
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source="author.username")
+    post = serializers.ReadOnlyField(source="post.id")
+
+    class Meta:
+        model = Comment
+        fields = ["id", "post", "author", "content", "created_at", "updated_at"]
