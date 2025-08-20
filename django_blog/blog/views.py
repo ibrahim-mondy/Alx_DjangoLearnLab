@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Post
+from .models import Post, Comment
+from .forms import CustomUserRegistrationForm, ProfileUpdateForm
+
 
 class PostListView(ListView):
     model = Post
@@ -20,7 +23,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     fields = ['title', 'content']
 
     def form_valid(self, form):
-        # يربط البوست بالمستخدم الحالي
+        
         form.instance.author = self.request.user
         return super().form_valid(form)
 
@@ -31,7 +34,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     fields = ['title', 'content']
 
     def test_func(self):
-        # يسمح بس للكاتب بتعديل البوست
+    
         post = self.get_object()
         return self.request.user == post.author
 
